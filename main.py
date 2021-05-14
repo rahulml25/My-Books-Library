@@ -201,3 +201,4 @@ class Library:
 if __name__ == '__main__':
     Rahul = Library.set_properties('Rahul-Library', ['C++', 'Python', 'Java'])
     Rahul.run()
+    print('\n[programme finished]\n')
