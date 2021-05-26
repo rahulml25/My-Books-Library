@@ -144,7 +144,7 @@ class Library:
                         elif name == '':
                             print('\nYour name is not Entered!')
                     else:
-                        print(f"\nThe book 📚 '{book}' is already being used by {register[book]['lender']}")
+                        print(f"\nThe book 📚 '{book}' is already being used by {self.register[book]['lender']}")
                 else:
                     print(f"\nThe book 📚 '{book}' is not available!")
         return ['']
