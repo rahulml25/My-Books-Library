@@ -61,9 +61,12 @@ class Library(object):
         print()
 
     def allBooks(self):
-        print("Available Books are:")
-        for book in self.books:
-            print(' '*3,f"{book}: {self.bookAvailability(book)} copy")
+        if len(self.availableBooks)!=0:
+            print("Available Books are:")
+            for book in self.availableBooks:
+                print(' '*3,f"{book}: {self.bookAvailability(book)} copy")
+        else:
+            print("No books are available now!")
         print()
         self.printLendedBooks()
 
@@ -115,24 +118,31 @@ class Library(object):
         else:
             succeed = False
             print("You have not lended any books!")
+        
+        if succeed:
+           print("You sucessfully returned books\n")
+           print("Thank you! for returning books")
+           print() 
 
     def run(self):
-        choice = "3"
-
-        self.allBooks()
-        
-        if choice=="1":
-            self.allBooks()
-
-        elif choice=="2":
-            self.lendBooks()
-
-        elif choice=="3":
-            self.donateBooks()
-
-        elif choice=="4":
-            self.returnBooks()
-        self.allBooks()
+        print(f"Welcome to {self.name}:\n")
+        while True:
+            print("Use Following options:\n1. Available Books \n2. Lend Books \n3. Donate Books \n4. Return Books \n")
+            choice = input("Enter your choice:\n\n:⏩ ").strip()
+            print()
+            
+            if choice=="1":
+                self.allBooks()
+    
+            elif choice=="2":
+                self.lendBooks()
+    
+            elif choice=="3":
+                self.donateBooks()
+    
+            elif choice=="4":
+                self.returnBooks()
+            print(".............\n............\n")
 
 if __name__ == "__main__":
     rahul = Library.setup_library(
