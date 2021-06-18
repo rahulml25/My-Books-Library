@@ -1,39 +1,40 @@
-import os
+import os, time
+from typing import NoReturn
 
 class Library(object):
 
-    def __init__(self, name, register):
+    def __init__(self, name: str, register: dict) -> None:
         self.name = name
         self.register = register
 
     @classmethod
-    def setup_library(cls, name, *books):
+    def setup_library(cls, name: str, *books: tuple):
         register = cls.addBooks(cls, {}, *books)
         return cls(name, register)
 
     @property
-    def books(self):
+    def books(self) -> None:
         return self.register.keys()
 
     @property
-    def availableBooks(self):
+    def availableBooks(self) -> list:
         return [book for book in self.books if self.bookAvailability(book)!=0]
 
-    def bookAvailability(self, book):
+    def bookAvailability(self, book: str) -> int:
         return self.register[book]["copy"]
 
-    def bookLenders(self, book):
+    def bookLenders(self, book: str) -> list:
         return self.register[book]["lenders"]
 
     @property
-    def lendedBooks(self):
+    def lendedBooks(self) -> list:
         return [book for book in self.books if self.bookAvailability(book)==0]
 
     @property
-    def lenders(self):
-        return [lender for lender in self.lenders(book) for book in self.books if self.bookAvailability(book)==0]
+    def lenders(self) -> list:
+        return [(lender for lender in self.bookLenders(book)) for book in self.books if self.bookAvailability(book)==0]
 
-    def addBooks(self, main_register, *books):
+    def addBooks(self, main_register: dict, *books: tuple) -> dict:
         for book in books:
             if book[1]>0:
                 main_register[book[0]] = {"copy": book[1], "lenders": []}
@@ -41,7 +42,7 @@ class Library(object):
                 main_register[book[0]] = {"copy": book[1], "lenders": book[2]}
         return main_register
 
-    def askTo(self, sub):
+    def askTo(self, sub: str) -> list:
         books = input(f"Enter Books to {sub}:\n")
         if ', ' in books:
             books = books.split(', ')
@@ -50,17 +51,16 @@ class Library(object):
         elif ' and ' in books:
             books = books.split(' and ')
         else:
-            book = books
-            return [book]
+            book = books; return [book]
         return books
 
-    def printLendedBooks(self):
+    def printLendedBooks(self) -> None:
         print("Lended Books are:")
         for book in self.lendedBooks:
             print(' '*3,f"{book}: {', '.join(self.bookLenders(book))}")
         print()
 
-    def allBooks(self):
+    def allBooks(self) -> None:
         if len(self.availableBooks)!=0:
             print("Available Books are:")
             for book in self.availableBooks:
@@ -68,9 +68,11 @@ class Library(object):
         else:
             print("No books are available now!")
         print()
-        self.printLendedBooks()
 
-    def lendBooks(self):
+        if len(self.lendedBooks)!=0:
+            self.printLendedBooks()
+
+    def lendBooks(self) -> None:
         customer = input("Ener your name:\n"),print()
         books = self.askTo("lend")
         print()
@@ -87,7 +89,7 @@ class Library(object):
             print("You sucessfully lended books\n")
         print()
 
-    def donateBooks(self):
+    def donateBooks(self) -> None:
         books = self.askTo("donate")
         print()
         for book in books:
@@ -99,9 +101,14 @@ class Library(object):
         print("Thank you! for donating books")
         print()
 
-    def returnBooks(self):
+    def returnBooks(self) -> None:
         succeed = True
-        customer = input("Ener your name:\n"),print()
+        if len(self.lendedBooks) != 0:
+            customer = input("Ener your name:\n"); print()
+        else:
+            print("No books to return", end=''); time.sleep(0.6), print('!', end='')
+            time.sleep(1) , print(''); return None
+
         if customer in self.lenders:
             books = self.askTo("return")
             for book in books:
@@ -118,36 +125,40 @@ class Library(object):
         else:
             succeed = False
             print("You have not lended any books!")
-        
+
         if succeed:
            print("You sucessfully returned books\n")
            print("Thank you! for returning books")
-           print() 
+           print()
 
-    def run(self):
+    def run(self) -> NoReturn:
         print(f"Welcome to {self.name}:\n")
         while True:
             print("Use Following options:\n1. Available Books \n2. Lend Books \n3. Donate Books \n4. Return Books \n")
-            choice = input("Enter your choice:\n\n:⏩ ").strip()
-            print()
-            
+            choice = input("Enter your choice:\n\n:⏩ ").strip(); print()
+
             if choice=="1":
                 self.allBooks()
-    
+
             elif choice=="2":
                 self.lendBooks()
-    
+
             elif choice=="3":
                 self.donateBooks()
-    
+
             elif choice=="4":
                 self.returnBooks()
-            print(".............\n............\n")
+
+            elif choice=="q":
+                quit()
+            
+            print("."*17)
 
 if __name__ == "__main__":
     rahul = Library.setup_library(
         "RahulML2505-Library",
-        ("Python", 0, ["Rahul",]),
+        # ("Python", 0, ["Rahul",]),
         ("Java", 1)
         )
     rahul.run()
+    # print(rahul)
