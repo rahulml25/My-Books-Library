@@ -18,8 +18,8 @@ class Library(object):
         """
         saves the register as folder
         """
-        register = 'register\\'
-        folders = r'register\data\\'
+        register = 'register'
+        folders = 'register/data'
 
         # Creating Folder if doesn't exists
         if not os.path.exists(folders):
@@ -28,7 +28,7 @@ class Library(object):
         # Saving names of the books
         books = self.books
 
-        with open(f"{register}books.log", 'w') as file:
+        with open(f"{register}/books.log", 'w') as file:
             file.write(f"{', '.join(books)}")
 
         # Saving data for all books
@@ -40,7 +40,7 @@ class Library(object):
                 lenders = None
 
             # Saving book data
-            file = open(f'{folders}{book}.log', 'w')
+            file = open(f'{folders}/{book}.log', 'w')
             file.write(f"copy:{book_data['copy']};\n")
             file.write(f"lenders:{lenders}")
             file.close()
@@ -223,6 +223,9 @@ class Library(object):
 
             elif choice == "q":
                 quit()
+
+            else:
+                print("Please enter a valid option!")
 
             self.save_register()
             print("." * 17)
