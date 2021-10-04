@@ -4,7 +4,10 @@ __pycache__/
 *$py.class
 
 # My Custom
-*.txt
+*.log
+/register/data/
+.vscode
+.idea
 
 # C extensions
 *.so

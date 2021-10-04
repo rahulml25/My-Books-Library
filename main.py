@@ -48,7 +48,6 @@ class Library:
     def askTo(self, type):
         ''' returns inputing name(s) of the books '''
         books = input(f'\nWhich book do you to {type}?\nEnter Books: ').strip()
-        conditions = [', ', ',', ' and ']
         if ', '  in books or ','  in books or ' and ' in books:
             if ', ' in books:
                 return books.split(', ')
@@ -60,7 +59,7 @@ class Library:
             print(f'\nYou have not {type} any books!')
             return ['']
         else:
-            return [books]
+           return [books]
 
     def addBook(self, mainReg, books):
         ''' helps adding books [returns a dictionary of books] '''
@@ -119,6 +118,7 @@ class Library:
     @property
     def donate(self):
         books = self.askTo('donate')
+        print(books)
         if not books == ['']:
             self.register = self.addBook(self.register, books)
             self.wish('donate', 'books')
@@ -182,11 +182,11 @@ class Library:
                     if self.lend == ['']:
                         pass #continue
                 elif action == '3':
-                    #self.doing('Donating')
+                    # self.doing('Donating')
                     if self.donate == ['']:
                         pass #continue
                 elif action == '4':
-                    #self.doing('Returning')
+                    # self.doing('Returning')
                     if self.returnBooks == ['']:
                         pass #continue
             else:
