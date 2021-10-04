@@ -1,8 +1,9 @@
 import os
 
+
 class Library:
     ''' A simple Class to manage a Library '''
-    
+
     def __init__(self, library_name, initial_books, register):
         ''' Initialises some variables '''
         self.initial_books = initial_books
@@ -49,7 +50,7 @@ class Library:
         ''' returns inputing name(s) of the books '''
         books = input(f'\nWhich book do you to {type}?\nEnter Books: ').strip()
         conditions = [', ', ',', ' and ']
-        if ', '  in books or ','  in books or ' and ' in books:
+        if ', ' in books or ',' in books or ' and ' in books:
             if ', ' in books:
                 return books.split(', ')
             elif ',' in books:
@@ -74,7 +75,7 @@ class Library:
         ''' saves the register as folder '''
         folder = 'register/'
         if not os.path.exists(folder):
-        	os.mkdir(folder)
+            os.mkdir(folder)
         books = self.books
         with open('register/books.txt', 'w') as f:
             f.write(f"{', '.join(books)}")
@@ -107,7 +108,8 @@ class Library:
             print('\nThe unreturned books are: ', end='')
             if type == 'showing':
                 for book in books:
-                    print(f"\n{6*' '}{book} : ({', '.join(self.register[book]['lender'])})")
+                    print(
+                        f"\n{6*' '}{book} : ({', '.join(self.register[book]['lender'])})")
             elif type == 'returning':
                 print(f"{', '.join(books)}")
                 return books
@@ -136,15 +138,17 @@ class Library:
                         print(f'\nThe book {book} 📚 is available.')
                         name = input('\nEnter Your name: ')
                         if not name == '':
-                        	enter = input('Press Enter to lend books: \n').strip()
-	                        if enter == '':
-	                            self.register[book]['copy'] -= 1
-	                            self.register[book]['lender'].append(name)
-	                            self.wish('lend', 'books')
+                            enter = input(
+                                'Press Enter to lend books: \n').strip()
+                            if enter == '':
+                                self.register[book]['copy'] -= 1
+                                self.register[book]['lender'].append(name)
+                                self.wish('lend', 'books')
                         elif name == '':
                             print('\nYour name is not Entered!')
                     else:
-                        print(f"\nThe book 📚 '{book}' is already being used by {self.register[book]['lender']}")
+                        print(
+                            f"\nThe book 📚 '{book}' is already being used by {self.register[book]['lender']}")
                 else:
                     print(f"\nThe book 📚 '{book}' is not available!")
         return ['']
@@ -157,46 +161,41 @@ class Library:
             print(f"The lenders are:\n{3*' '}{lenders}\n")
             name = input('Enter Your name: ')
             if not name == '':
-            	books = self.askTo('return')
-            	if not books == ['']:
-	                enter = input('Press Enter to return books:\n')
-	                if enter == '':
-	                    for book in books:
-	                        self.register[book]['copy'] += 1
-	                        self.register[book]['lender'].remove(name)
-	                    self.wish('returned', 'books')
-            
+                books = self.askTo('return')
+                if not books == ['']:
+                    enter = input('Press Enter to return books:\n')
+                    if enter == '':
+                        for book in books:
+                            self.register[book]['copy'] += 1
+                            self.register[book]['lender'].remove(name)
+                        self.wish('returned', 'books')
+
         return ['']
 
     def run(self):
         print(f'Welcome to {self.name}:')
         while True:
             print('\nUse Following options:')
-            action = input("1. Available Books \n2. Lend Books \n3. Donate Books \n4. Return Books \n\n:⏩ ")
+            action = input(
+                "1. Available Books \n2. Lend Books \n3. Donate Books \n4. Return Books \n\n:⏩ ")
             if action == '1' or action == '2' or action == '3' or action == '4':
                 if action == '1':
-                    #self.doing('Searching')
                     self.allBooks()
                 elif action == '2':
-                    #self.doing('Lending')
-                    if self.lend == ['']:
-                        pass #continue
+                    self.lend
                 elif action == '3':
-                    #self.doing('Donating')
-                    if self.donate == ['']:
-                        pass #continue
+                    self.donate
                 elif action == '4':
-                    #self.doing('Returning')
-                    if self.returnBooks == ['']:
-                        pass #continue
+                    self.returnBooks
             else:
                 print('Please enter a valid option')
             self.saveRegister()
-            
+
             user_choice = input("\nPress Q to QUIT: ").lower()
             if user_choice == "q":
                 break
             continue
+
 
 if __name__ == '__main__':
     Rahul = Library.set_properties('Rahul-Library', ['C++', 'Python', 'Java'])
