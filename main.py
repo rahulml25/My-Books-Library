@@ -2,32 +2,44 @@ import os
 
 
 class Library:
-    ''' A simple Class to manage a Library '''
+    """
+    A simple Class to manage a Library
+    """
 
     def __init__(self, library_name, initial_books, register):
-        ''' Initialises some variables '''
-        self.initial_books = initial_books
+        """
+        Initialises some variable
+        """
         self.name = library_name
+        self.initial_books = initial_books
         self.register = register
 
     @classmethod
     def set_properties(cls, library_name, book_list):
-        ''' Custom Initialiser '''
+        """
+        Custom Initialiser
+        """
         register = cls.addBook(cls, {}, book_list)
         return cls(library_name, book_list, register)
 
     @property
     def books(self):
-        ''' returns the list of the total books '''
+        """
+        returns the list of the total books
+        """
         return list(self.register.keys())
 
     def availablity(self, book):
-        ''' returns the number of copies of the given book '''
+        """
+        returns the number of copies of the given book
+        """
         return int(self.register[book]['copy'])
 
     @property
     def lenders(self):
-        ''' returns a list of the lenders '''
+        """
+        returns a list of the lenders
+        """
         lenders = []
         for book in self.books:
             lender = self.register[book]['lender']
@@ -38,7 +50,9 @@ class Library:
 
     @property
     def unreturnedBooks(self):
-        ''' returns a list of the unreturned books '''
+        """
+        returns a list of the unreturned books
+        """
         books = []
         for book in self.books:
             copy = self.register[book]['copy']
@@ -47,7 +61,9 @@ class Library:
         return books
 
     def askTo(self, type):
-        ''' returns inputing name(s) of the books '''
+        """
+        returns inputing name(s) of the books
+        """
         books = input(f'\nWhich book do you to {type}?\nEnter Books: ').strip()
         conditions = [', ', ',', ' and ']
         if ', ' in books or ',' in books or ' and ' in books:
@@ -64,7 +80,9 @@ class Library:
             return [books]
 
     def addBook(self, mainReg, books):
-        ''' helps adding books [returns a dictionary of books] '''
+        """
+        Helps adding books [returns a dictionary of books]
+        """
         register = mainReg
         for book in books:
             register[book] = {}
@@ -72,7 +90,9 @@ class Library:
         return register
 
     def saveRegister(self):
-        ''' saves the register as folder '''
+        """
+        saves the register as folder
+        """
         folder = 'register/'
         if not os.path.exists(folder):
             os.mkdir(folder)
@@ -118,7 +138,6 @@ class Library:
                 print('\nNo books to Return!')
                 return []
 
-    @property
     def donate(self):
         books = self.askTo('donate')
         if not books == ['']:
@@ -127,7 +146,6 @@ class Library:
             print('Very very Thank you! To Donate books')
         return ['']
 
-    @property
     def lend(self):
         self.allBooks()
         books = self.askTo('lend')
@@ -153,7 +171,6 @@ class Library:
                     print(f"\nThe book 📚 '{book}' is not available!")
         return ['']
 
-    @property
     def returnBooks(self):
         unreturned = self.print_unreturned('returning')
         if not unreturned == []:
@@ -170,34 +187,44 @@ class Library:
                             self.register[book]['lender'].remove(name)
                         self.wish('returned', 'books')
 
-        return ['']
-
     def run(self):
         print(f'Welcome to {self.name}:')
+
         while True:
             print('\nUse Following options:')
             action = input(
-                "1. Available Books \n2. Lend Books \n3. Donate Books \n4. Return Books \n\n:⏩ ")
-            if action == '1' or action == '2' or action == '3' or action == '4':
+                "1. Available Books \n \
+                 2. Lend Books \n \
+                 3. Donate Books \n \
+                 4. Return Books \n \
+                 \n:⏩ "
+            )
+
+            if any([action == str(i) for i in range(1, 5)]):
                 if action == '1':
                     self.allBooks()
                 elif action == '2':
-                    self.lend
+                    self.lend()
                 elif action == '3':
-                    self.donate
+                    self.donate()
                 elif action == '4':
-                    self.returnBooks
+                    self.returnBooks()
+
             else:
-                print('Please enter a valid option')
+                print('Please choose a valid option!')
+
             self.saveRegister()
 
             user_choice = input("\nPress Q to QUIT: ").lower()
-            if user_choice == "q":
+            if user_choice == 'q':
                 break
-            continue
 
 
 if __name__ == '__main__':
-    Rahul = Library.set_properties('Rahul-Library', ['C++', 'Python', 'Java'])
+    Rahul = Library.set_properties(
+        'Rahul-Library',
+        ['C++', 'Python', 'Java']
+    )
     Rahul.run()
+
     print('\n[programme finished]\n')
